@@ -1,6 +1,13 @@
+/* style.css */
+
+* {
+    box-sizing: border-box; /* 모든 요소의 크기 계산 표준화 */
+}
+
 body {
     background-color: white; 
     margin: 0; 
+    padding: 0; /* padding도 0으로 설정하여 오차 제거 */
     min-height: 100vh; 
 }
 
@@ -10,9 +17,9 @@ body {
     left: 20px;
     font-family: 'Malgun Gothic', 'Dotum', 'Apple SD Gothic Neo', sans-serif; 
     color: black; 
-    /* 폰트 크기를 10vw에서 15vw로 키웠습니다. */
-    font-size: 15vw; 
-    /* 글꼴 굵기를 'bold'에서 '900'으로 설정하여 가장 굵게 만들었습니다. */
+    /* 글자 크기: 13인치 화면 기준에 맞춰 5vw로 설정 */
+    font-size: 10vw; 
+    /* 글꼴 굵기: 가장 굵은 900으로 설정 */
     font-weight: 900; 
     white-space: nowrap;
 }
@@ -25,13 +32,13 @@ body {
     line-height: 1; 
 }
 
-/* 클릭 전 상태에서만 적용되는 텍스트 컨테이너 스타일 */
+/* 클릭 전 호버 상태 (상호작용 안내) */
 #text-container.ready-to-click {
     transition: transform 0.3s ease-out; 
     cursor: pointer; 
 }
 
-/* 텍스트 컨테이너에 호버했을 때 텍스트 전체를 확대 */
+/* 호버 시 전체 텍스트를 살짝 확대 */
 #text-container.ready-to-click:hover {
     transform: scale(1.03); 
 }
