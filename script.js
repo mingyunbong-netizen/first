@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const leftBoundary = (0 - containerRect.left); 
                 
                 // ⭐ 오른쪽 경계 조정: 안전 여유값 -5px 적용하여 뚫림 최종 방지
-                const rightBoundary = (viewportWidth - containerRect.left - rect.width) - 400; 
+                const rightBoundary = (viewportWidth - containerRect.left - rect.width) - 800; 
 
                 if (data.x < leftBoundary) {
                     // 왼쪽 벽 충돌
