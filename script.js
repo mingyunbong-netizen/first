@@ -1,15 +1,17 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const textContainer = document.getElementById('text-container');
-    const originalText = "서사, 위기 속에서"; // 여기에 원하는 텍스트를 입력하세요
+    const originalText = "서사, 위기 속에서"; 
     const jamoElements = [];
     
-    // --- 중력 시뮬레이션 관련 상수 ---
+    // --- 무중력 시뮬레이션 상수 ---
     const GRAVITY = 0.05; 
     const FRICTION = 0.995; 
     const INITIAL_SCATTER = 5; 
     const BOUNCE = 0.8; 
     
-    // --- 마우스 상호작용 관련 상수 ---
+    // --- 마우스 상호작용 상수 ---
     const MOUSE_RADIUS = 100; 
     const MOUSE_STRENGTH = 1.5; 
     let isSeparated = false; 
@@ -28,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupJamo(text) {
         const characters = text.split('');
         
-        // **새로운 기능:** 초기 상태에서 호버 효과를 위해 클래스 추가
+        // 초기 상태: 호버 효과를 위한 클래스 추가
         textContainer.classList.add('ready-to-click'); 
 
         characters.forEach((char) => {
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- 물리 계산 ---
             if (!data.isStopped) {
+                // 중력 및 초기 흩어짐 적용
                 data.vy += GRAVITY; 
                 if (data.initialVX !== null) { 
                     data.vx += data.initialVX;
@@ -100,30 +103,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     data.initialVY = null;
                 }
                 
+                // 마찰 적용
                 data.vx *= FRICTION;
                 data.vy *= FRICTION;
 
+                // 위치 업데이트
                 data.x += data.vx;
                 data.y += data.vy;
 
                 // --- 충돌 처리 로직 ---
-                const leftBoundary = 0 - containerRect.left; 
-                const rightBoundary = viewportWidth - containerRect.left - rect.width;
+
+                // 1. 수평 경계 (좌우 벽) 충돌 처리
+                
+                // 왼쪽 경계: 안전 여유값 +2px 적용
+                const leftBoundary = (0 - containerRect.left); 
+                
+                // ⭐ 오른쪽 경계 조정: 안전 여유값 -5px 적용하여 뚫림 최종 방지
+                const rightBoundary = (viewportWidth - containerRect.left - rect.width) - 400; 
 
                 if (data.x < leftBoundary) {
+                    // 왼쪽 벽 충돌
                     data.x = leftBoundary;
                     data.vx *= -BOUNCE;
                 } else if (data.x > rightBoundary) {
+                    // 오른쪽 벽 충돌
                     data.x = rightBoundary;
                     data.vx *= -BOUNCE;
                 }
 
+                // 2. 수직 경계 (바닥) 충돌 처리
                 const floorY = viewportHeight - containerRect.top - rect.height;
 
                 if (data.y > floorY) {
                     data.y = floorY; 
                     data.vy *= -BOUNCE; 
                     
+                    // 속도가 매우 느려지면 멈춤 처리
                     if (Math.abs(data.vy) < 0.1 && Math.abs(data.vx) < 0.1) {
                         data.isStopped = true;
                         data.vx = 0; 
@@ -138,23 +153,19 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(updateGravity);
     }
 
-    // 4. 클릭 시 중력 시뮬레이션 시작 및 초기 호버 효과 제거
+    // 4. 클릭 시 시뮬레이션 시작 및 초기 호버 효과 제거
     function startSeparation() {
         if (!isSeparated) {
             isSeparated = true;
             updateGravity();
             document.addEventListener('mousemove', trackMouse);
-            document.body.removeEventListener('click', startSeparation); 
             
-            // **새로운 기능:** 클릭 후 호버 효과를 위해 추가했던 클래스 제거
+            // 클릭 후 호버 효과 클래스 제거
             textContainer.classList.remove('ready-to-click'); 
         }
     }
 
     // 5. 초기 설정 및 이벤트 리스너 등록
     setupJamo(originalText);
-    // 텍스트 컨테이너에 직접 클릭 이벤트를 등록하여 호버 상태를 이용할 수 있도록 합니다.
-    textContainer.addEventListener('click', startSeparation); 
-    // 기존 body 클릭 이벤트는 제거하거나 사용하지 않습니다.
-    // document.body.addEventListener('click', startSeparation);
+    textContainer.addEventListener('click', startSeparation);
 });
