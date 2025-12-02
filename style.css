@@ -1,0 +1,37 @@
+body {
+    background-color: white; 
+    margin: 0; 
+    min-height: 100vh; 
+}
+
+#text-container {
+    position: absolute; 
+    top: 20px; 
+    left: 20px;
+    font-family: 'Malgun Gothic', 'Dotum', 'Apple SD Gothic Neo', sans-serif; 
+    color: black; 
+    /* 폰트 크기를 10vw에서 15vw로 키웠습니다. */
+    font-size: 15vw; 
+    /* 글꼴 굵기를 'bold'에서 '900'으로 설정하여 가장 굵게 만들었습니다. */
+    font-weight: 900; 
+    white-space: nowrap;
+}
+
+/* 개별 자모 요소 스타일 */
+.jamo {
+    display: inline-block;
+    transition: none;
+    will-change: transform; 
+    line-height: 1; 
+}
+
+/* 클릭 전 상태에서만 적용되는 텍스트 컨테이너 스타일 */
+#text-container.ready-to-click {
+    transition: transform 0.3s ease-out; 
+    cursor: pointer; 
+}
+
+/* 텍스트 컨테이너에 호버했을 때 텍스트 전체를 확대 */
+#text-container.ready-to-click:hover {
+    transform: scale(1.03); 
+}
